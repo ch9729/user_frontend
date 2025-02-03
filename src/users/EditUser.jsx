@@ -1,8 +1,10 @@
 import axios from "axios";
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
-const AddUser = () => {
+const EditUser = () => {
+  const { id } = useParams(); //주소변수 id값을 받기
+
   const navigate = useNavigate(); // 라우터 이동객체
   const [user, setUser] = useState({
     name: "",
@@ -19,9 +21,18 @@ const AddUser = () => {
     });
   };
 
+  const loadUser = async () => {
+    const result = await axios.get(`http://localhost:8080/users/${id}`);
+    setUser(result.data);
+  };
+
+  useEffect(() => {
+    loadUser();
+  }, []);
+
   const onSubmit = async (e) => {
     e.preventDefault();
-    await axios.post("http://localhost:8080/users", user); //백엔드에 작성한 PostMapping주소를 적고 user에 대한 정보를 전달
+    await axios.put(`http://localhost:8080/users/${id}`, user); //백엔드에 작성한 PostMapping주소를 적고 user에 대한 정보를 전달
     navigate("/"); // 기본페이지로 이동
   };
 
@@ -29,7 +40,7 @@ const AddUser = () => {
     <div className="container">
       <div className="row">
         <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
-          <h2 className="text-center m-4">유저 가입</h2>
+          <h2 className="text-center m-4">유저 수정</h2>
           <form onSubmit={onSubmit}>
             <div className="mb-3">
               <label htmlFor="name" className="form-label">
@@ -78,7 +89,7 @@ const AddUser = () => {
                 type="submit"
                 className="btn btn-outline-primary px-3 mx-2"
               >
-                가입
+                수정
               </button>
               <Link to="/" className="btn btn-outline-danger px-3 mx-2">
                 취소
@@ -91,4 +102,4 @@ const AddUser = () => {
   );
 };
 
-export default AddUser;
+export default EditUser;
