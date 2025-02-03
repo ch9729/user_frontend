@@ -16,7 +16,7 @@ const Home = () => {
   }, []);
   return (
     <div className="container">
-      <table className="table border shadow my-4">
+      <table className="table border shadow my-4 text-center">
         <thead>
           <tr>
             <th scope="col">#</th>
