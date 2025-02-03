@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 
 const Home = () => {
   const [users, setUsers] = useState([]); // 유저 목록
+
   const loadUsers = () => {
     axios
       .get("http://localhost:8080/users")
@@ -10,7 +11,6 @@ const Home = () => {
       .catch((err) => console.log(err));
   };
 
-  console.log(users);
   useEffect(() => {
     loadUsers();
   }, []);
@@ -23,6 +23,7 @@ const Home = () => {
             <th scope="col">name</th>
             <th scope="col">username</th>
             <th scope="col">email</th>
+            <th scope="col">액션</th>
           </tr>
         </thead>
         <tbody>
@@ -32,6 +33,11 @@ const Home = () => {
               <td>{user.name}</td>
               <td>{user.username}</td>
               <td>{user.email}</td>
+              <td>
+                <button className="btn btn-outline-secondary mx-2">보기</button>
+                <button className="btn btn-outline-warning mx-2">수정</button>
+                <button className="btn btn-outline-danger mx-2">삭제</button>
+              </td>
             </tr>
           ))}
         </tbody>
